@@ -24,11 +24,12 @@ def to_jsonl(data_path='./raw_data/data.json', save_path='./raw_data/data.jsonl'
         data = json.load(f)
     with open(save_path, 'w', encoding='utf-8') as f:
         for datum in tqdm(data, desc='formatting...'):
-            f.write(json.dumps(format_data(datum)))
+            f.write(json.dumps(format_data(datum), ensure_ascii=False))
+            f.write('\n')
 
 
 def tokenize(datum, max_seq_length):
-    prompt = datum['prompt']
+    prompt = datum['context']
     target = datum['target']
     prompt_ids = tokenizer.encode(prompt, max_length=max_seq_length, truncation=True)
     target_ids = tokenizer.encode(target, max_length=max_seq_length, truncation=True, add_special_tokens=False)
@@ -40,22 +41,23 @@ def tokenize(datum, max_seq_length):
 
 
 def to_dataset(raw_path='./raw_data/data.jsonl', max_seq_length=384, save_path='./data'):
-    def data_generator():
-        with open(raw_path, 'r', encoding='utf-8') as f:
-            for line in tqdm(f.readlines()):
-                datum = json.loads(line)
-                tokenized = tokenize(datum, max_seq_length)
-                tokenized = tokenized['input_ids'][:max_seq_length]
-                yield tokenized
-
-    dataset = datasets.Dataset.from_generator(
-        lambda: data_generator
+    features = []
+    with open(raw_path, 'r', encoding='utf-8') as f:
+        for line in tqdm(f.readlines()):
+            datum = json.loads(line)
+            tokenized = tokenize(datum, max_seq_length)
+            tokenized['input_ids'] = tokenized['input_ids'][:max_seq_length]
+            features.append(tokenized)
+    dataset = datasets.Dataset.from_dict(
+        {
+            "input_ids": [f['input_ids'] for f in features],
+            "seq_len": [f['seq_len'] for f in features]
+        }
     )
     dataset.save_to_disk(save_path)
 
 
 def main():
-    to_jsonl()
     to_dataset()
 
 

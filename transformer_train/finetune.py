@@ -13,6 +13,7 @@ from dataclasses import dataclass, field
 import datasets
 import os
 
+
 tokenizer = AutoTokenizer.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True)
 net = AutoModel.from_pretrained("THUDM/chatglm-6b", load_in_8bit=True, trust_remote_code=True, device_map="auto")
 
@@ -37,6 +38,7 @@ def prepare_model(model, finetune_args):
         r=finetune_args.lora_rank,
         lora_alpha=32,
         lora_dropout=0.1,
+        target_modules=["query_key_value", "dense", "dense_h_to_4h", "dense_4h_to_h", 'lm_head']
     )
     model = get_peft_model(model, peft_config)
     return model

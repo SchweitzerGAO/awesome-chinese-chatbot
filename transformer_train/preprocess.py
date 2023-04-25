@@ -8,10 +8,9 @@ config = AutoConfig.from_pretrained('THUDM/chatglm-6b', trust_remote_code=True, 
 
 
 def format_data(datum: dict) -> dict:
-    context = f'Instruction: {datum["instruction"]}\n'
+    context = f'{datum["instruction"]}\n'
     if datum.get('input'):
-        context += f'Input: {datum["input"]}\n'
-    context += "Answer: "
+        context += f'{datum["input"]}\n'
     target = datum['output']
     return {
         'context': context,
@@ -19,7 +18,7 @@ def format_data(datum: dict) -> dict:
     }
 
 
-def to_jsonl(data_path='./raw_data/data.json', save_path='./raw_data/data.jsonl'):
+def to_jsonl(data_path='../raw_data/data.json', save_path='../raw_data/data.jsonl'):
     with open(data_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
     with open(save_path, 'w', encoding='utf-8') as f:
@@ -40,7 +39,7 @@ def tokenize(datum, max_seq_length):
     }
 
 
-def to_dataset(raw_path='./raw_data/data.jsonl', max_seq_length=384, save_path='./data'):
+def to_dataset(raw_path='../raw_data/data.jsonl', max_seq_length=384, save_path='../data'):
     features = []
     with open(raw_path, 'r', encoding='utf-8') as f:
         for line in tqdm(f.readlines()):
@@ -58,7 +57,7 @@ def to_dataset(raw_path='./raw_data/data.jsonl', max_seq_length=384, save_path='
 
 
 def main():
-    to_dataset()
+    to_jsonl()
 
 
 if __name__ == '__main__':

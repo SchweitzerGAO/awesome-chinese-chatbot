@@ -26,20 +26,23 @@ def inference(text):
     input_ids = input_ids.to(infer_config.device)
     out = net.generate(
         input_ids=input_ids,
-        max_length=infer_config.max_length,
         temperature=infer_config.temperature,
         top_p=infer_config.top_p,
-        repetition_penalty=infer_config.repetition_penalty
+        repetition_penalty=infer_config.repetition_penalty,
+        max_new_tokens=infer_config.max_new_tokens
     )
-    answer = tokenizer.decode(out[0])
+    answer = tokenizer.decode(out[0][input_ids.shape[1]:]).replace(text, '').replace('\n', '')
     return answer
 
 
 def chat():
+    history = []
     with torch.no_grad():
         while True:
             text = input('User: ')
-            answer = inference(text)
+            history.append(text)
+            answer = inference('\n'.join(history[-5:]))
+            history.append(answer)
             print(f'XiaoRuan: {answer}')
 
 

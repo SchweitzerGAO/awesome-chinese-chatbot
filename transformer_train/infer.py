@@ -17,6 +17,7 @@ def inference(text):
         max_length=infer_config.max_length,
         temperature=infer_config.temperature,
         top_p=infer_config.top_p,
+        repetition_penalty=1.02
     )
     answer = tokenizer.decode(out[0])\
                       .replace(text, '')\

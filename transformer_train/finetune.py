@@ -75,7 +75,7 @@ def collate_fn(features):
 
 class ChatGLMTrainer(Trainer):
     def compute_loss(self, model, inputs, return_outputs=False):
-        return model(input_ids=inputs['input_ids'], labels=inputs['labels'])
+        return model(input_ids=inputs['input_ids'], labels=inputs['labels']).loss
 
     def save_model(self, output_dir: Optional[str] = './saved_models', _internal_call: bool = False):
         os.makedirs(output_dir, exist_ok=True)

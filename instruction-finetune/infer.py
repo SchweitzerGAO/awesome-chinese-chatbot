@@ -3,6 +3,7 @@ from transformers import AutoTokenizer
 import torch
 from peft import LoraConfig, TaskType, get_peft_model
 import infer_config
+import argparse
 
 torch.set_default_tensor_type(torch.cuda.HalfTensor)
 net = AutoModel.from_pretrained('THUDM/chatglm-6b', trust_remote_code=True, device_map='auto')
@@ -16,8 +17,6 @@ peft_config = LoraConfig(
     lora_dropout=0.1,
 )
 net = get_peft_model(net, peft_config)
-net.load_state_dict(torch.load('./saved_models/epoch_3/adapter_model.bin'), strict=False)
-torch.set_default_tensor_type(torch.cuda.FloatTensor)
 
 
 def inference(text):
@@ -35,7 +34,10 @@ def inference(text):
     return answer
 
 
-def chat():
+def chat(weight_path):
+    assert weight_path is not None
+    net.load_state_dict(torch.load(f'{weight_path}/adapter_model.bin'), strict=False)
+    torch.set_default_tensor_type(torch.cuda.FloatTensor)
     history = []
     with torch.no_grad():
         while True:
@@ -47,4 +49,7 @@ def chat():
 
 
 if __name__ == '__main__':
-    chat()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--weight_path', type=str, default=None)
+    args = parser.parse_args()
+    chat(args.weight_path)

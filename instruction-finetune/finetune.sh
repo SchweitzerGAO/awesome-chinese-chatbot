@@ -1,0 +1,12 @@
+python finetune.py \
+    --lora_rank 8 \
+    --num_train_epochs 3 \
+    --save_steps 1000 \
+    --remove_unused_columns false \
+    --logging_steps 50 \
+    --output_dir ./saved_models \
+    --gradient_accumulation_steps 2 \
+    --per_device_train_batch_size 1 \
+    --fp16 \
+    --learning_rate 2e-5 \
+    --save_total_limit 2

@@ -1,6 +1,9 @@
-# chatglm-chatbot
+# Awesome Chinese Chatbots
+To try all models. Run:
+
+## ChatGLM
 A chatbot with PTM [ChatGLM-6B](https://github.com/THUDM/ChatGLM-6B) with instruction fine-tuning
-## Acknowledgement
+### Acknowledgement
 I would like to extend my sincerest appreciation to the developers of 
 - [ChatGLM](https://github.com/THUDM/ChatGLM-6B)
 - [ChatGLM-Tuning](https://github.com/mymusise/ChatGLM-Tuning)
@@ -8,10 +11,10 @@ I would like to extend my sincerest appreciation to the developers of
 
 With the help of these LLM weight and code, I made a fine-tuned LLM of myself.
 
-## Finetune
+### Finetune
 To finetune, run:
 ```bash
-./finetune.sh  
+./finetune.sh
 ```
 You can modify the parameters in `finetune.sh`
 
@@ -20,9 +23,11 @@ To see what parameters you can modify, run:
 python finetune.py -h
 ```
 
-## Chat
+### Chat
 To chat with the bot, run
 ```bash
 python infer.py --weight_path PATH_TO_YOUR_WEIGHT
 ```
 
+## MOSS
+Coming Soon...

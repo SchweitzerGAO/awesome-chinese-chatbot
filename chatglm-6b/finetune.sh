@@ -8,5 +8,5 @@ python finetune.py \
     --gradient_accumulation_steps 2 \
     --per_device_train_batch_size 1 \
     --fp16 \
-    --learning_rate 2e-5 \
+    --learning_rate 4e-6 \
     --save_total_limit 2

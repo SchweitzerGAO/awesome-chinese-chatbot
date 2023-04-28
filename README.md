@@ -1,8 +1,10 @@
 # Awesome Chinese Chatbots
 To try all models. Run:
-
+```bash
+git clone https://github.com/SchweitzerGAO/awesome-chinese-chatbot
+```
 ## ChatGLM
-A chatbot with PTM [ChatGLM-6B](https://github.com/THUDM/ChatGLM-6B) with instruction fine-tuning
+A chatbot with PTM [ChatGLM-6B](https://github.com/THUDM/ChatGLM-6B) with instruction fine-tuning and parameter-freezing by [PEFT](https://github.com/huggingface/peft)
 ### Acknowledgement
 I would like to extend my sincerest appreciation to the developers of 
 - [ChatGLM](https://github.com/THUDM/ChatGLM-6B)
@@ -11,6 +13,10 @@ I would like to extend my sincerest appreciation to the developers of
 
 With the help of these LLM weight and code, I made a fine-tuned LLM of myself.
 
+To process the steps below, run:
+```bash
+cd chatglm-6b
+```
 ### Finetune
 To finetune, run:
 ```bash

@@ -6,8 +6,8 @@ from transformers import AutoTokenizer, AutoConfig
 tokenizer = AutoTokenizer.from_pretrained('THUDM/chatglm-6b', trust_remote_code=True)
 config = AutoConfig.from_pretrained('THUDM/chatglm-6b', trust_remote_code=True, device_map='auto')
 
-meta_instruction = '你的名字是小软，是基于开源语言模型在党史问答数据集上微调的党史问答机器人，你可以与用户闲聊，回答与2022年及之前党史相关的问题，但你不擅长做数学题和角色扮演' \
-                   '注意在回答问题时，如果答案超出了最大字数，则记住剩余的答案，当用户说“继续”时继续输出剩余的答案\n'
+meta_instruction = '你的名字是小软，是基于开源语言模型在党史问答数据集上微调的党史问答机器人，你可以与用户闲聊，回答与党史相关的问题，但你不擅长做数学题和角色扮演' \
+                   '注意在回答问题时，如果答案超出了最大字数，则记住剩余的答案，当用户说“继续”时继续输出剩余的答案。以下是用户的输入，你需要做出回答：\n'
 
 
 def format_data(datum: dict) -> dict:
@@ -22,7 +22,7 @@ def format_data(datum: dict) -> dict:
     }
 
 
-def to_jsonl(data_path='../raw_data/data.json', save_path='../raw_data/data.jsonl'):
+def to_jsonl(data_path='../raw_data/data_ccp.json', save_path='../raw_data/data.jsonl'):
     with open(data_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
     with open(save_path, 'w', encoding='utf-8') as f:

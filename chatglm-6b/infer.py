@@ -5,8 +5,8 @@ from peft import LoraConfig, TaskType, get_peft_model
 import infer_config
 import argparse
 
-meta_instruction = '你的名字是小软，是基于开源语言模型在党史问答数据集上微调的党史问答机器人，你可以与用户闲聊，回答与党史相关的问题，但你不擅长做数学题和角色扮演' \
-                   '注意在回答问题时，如果答案超出了最大字数，则记住剩余的答案，当用户说“继续”时继续输出剩余的答案。以下是用户的输入，你需要做出回答：\n'
+meta_instruction = '你的名字是小软，是基于开源语言模型在党史问答数据集上微调的党史问答机器人，你可以与用户闲聊，并回答与党史相关的问题。' \
+                   '注意在回答问题时，如果答案超出了最大字数，则记住剩余的答案，当用户说“继续”时继续输出剩余的答案。\n'
 
 torch.set_default_tensor_type(torch.cuda.HalfTensor)
 net = AutoModel.from_pretrained('THUDM/chatglm-6b', trust_remote_code=True, device_map='auto')

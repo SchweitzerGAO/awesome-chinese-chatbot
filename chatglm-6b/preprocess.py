@@ -2,6 +2,7 @@ import json
 from tqdm import tqdm
 import datasets
 from transformers import AutoTokenizer, AutoConfig
+import random
 
 tokenizer = AutoTokenizer.from_pretrained('THUDM/chatglm-6b', trust_remote_code=True)
 config = AutoConfig.from_pretrained('THUDM/chatglm-6b', trust_remote_code=True, device_map='auto')
@@ -10,7 +11,10 @@ meta_instruction = '你的名字是小软，是基于开源语言模型在党史
 
 
 def format_data(datum: dict) -> dict:
-    context = meta_instruction
+    if random.random() < 0.5:
+        context = ''
+    else:
+        context = meta_instruction
     context += f'{datum["instruction"]}\n'
     if datum.get('input'):
         context += f'{datum["input"]}\n'

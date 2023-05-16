@@ -5,8 +5,8 @@ python finetune.py \
     --remove_unused_columns false \
     --logging_steps 50 \
     --output_dir ./saved_models \
-    --gradient_accumulation_steps 2 \
-    --per_device_train_batch_size 1 \
+    --gradient_accumulation_steps 8 \
+    --per_device_train_batch_size 8 \
     --fp16 \
-    --learning_rate 4e-6 \
-    --save_total_limit 2
+    --learning_rate 2e-5 \
+    --save_total_limit 2 

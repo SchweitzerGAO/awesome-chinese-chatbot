@@ -12,9 +12,9 @@ meta_instruction = '你的名字是小软，是基于开源语言模型在党史
 
 def format_data(datum: dict) -> dict:
     if random.random() < 0.5:
-        context = ''
-    else:
         context = meta_instruction
+    else:
+        context = ''
     context += f'{datum["instruction"]}\n'
     if datum.get('input'):
         context += f'{datum["input"]}\n'
@@ -25,7 +25,7 @@ def format_data(datum: dict) -> dict:
     }
 
 
-def to_jsonl(data_path='../raw_data/data_ccp.json', save_path='../raw_data/data.jsonl'):
+def to_jsonl(data_path='./raw_data/data_ccp.json', save_path='./raw_data/data.jsonl'):
     with open(data_path, 'r', encoding='utf-8') as f:
         data = json.load(f)
     with open(save_path, 'w', encoding='utf-8') as f:
@@ -46,7 +46,7 @@ def tokenize(datum, max_seq_length):
     }
 
 
-def to_dataset(raw_path='../raw_data/data.jsonl', max_seq_length=768, save_path='../data'):
+def to_dataset(raw_path='./raw_data/data.jsonl', max_seq_length=768, save_path='./data'):
     features = []
     with open(raw_path, 'r', encoding='utf-8') as f:
         for line in tqdm(f.readlines()):
@@ -65,6 +65,7 @@ def to_dataset(raw_path='../raw_data/data.jsonl', max_seq_length=768, save_path=
 
 def main():
     to_jsonl()
+    to_dataset()
 
 
 if __name__ == '__main__':

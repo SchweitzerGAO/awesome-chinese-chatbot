@@ -1,24 +1,17 @@
+import argparse
+
+import torch
+from peft import PeftModel
 from transformers import AutoModel
 from transformers import AutoTokenizer
-import torch
-from peft import LoraConfig, TaskType, get_peft_model
+
 import infer_config
-import argparse
 
 meta_instruction = '你的名字是小软，是基于开源语言模型在党史问答数据集上微调的党史问答机器人，你可以与用户闲聊，并回答与党史相关的问题。\n'
 
 torch.set_default_tensor_type(torch.cuda.HalfTensor)
-net = AutoModel.from_pretrained('THUDM/chatglm-6b', trust_remote_code=True, device_map='auto')
+net = AutoModel.from_pretrained('THUDM/chatglm-6b', trust_remote_code=True, load_in_8bit=False, device_map='auto').half()
 tokenizer = AutoTokenizer.from_pretrained('THUDM/chatglm-6b', trust_remote_code=True)
-
-peft_config = LoraConfig(
-    task_type=TaskType.CAUSAL_LM,
-    inference_mode=True,
-    r=8,
-    lora_alpha=32,
-    lora_dropout=0.1,
-)
-net = get_peft_model(net, peft_config)
 
 
 def inference(text):
@@ -38,7 +31,8 @@ def inference(text):
 
 def chat(weight_path):
     assert weight_path is not None
-    net.load_state_dict(torch.load(f'{weight_path}/adapter_model.bin'), strict=False)
+    global net
+    net = PeftModel.from_pretrained(net, weight_path)
     torch.set_default_tensor_type(torch.cuda.FloatTensor)
     history = []
     with torch.no_grad():
@@ -46,7 +40,7 @@ def chat(weight_path):
             text = input('User: ')
             text = meta_instruction + text
             history.append(text)
-            answer = inference('\n'.join(history[-5:]))
+            answer = inference(text)
             history.append(answer)
             print(f'XiaoRuan: {answer}')
 

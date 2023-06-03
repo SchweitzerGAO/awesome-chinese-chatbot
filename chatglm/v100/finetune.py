@@ -13,10 +13,8 @@ from dataclasses import dataclass, field
 import datasets
 import os
 
-
 tokenizer = AutoTokenizer.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True)
-net = AutoModel.from_pretrained("THUDM/chatglm-6b",trust_remote_code=True, device_map="auto")
-
+net = AutoModel.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True, device_map="auto")
 
 device = 'cuda:0' if torch.cuda.is_available() else 'cpu'
 

@@ -15,7 +15,7 @@ With the help of these LLM weight and code, I made a fine-tuned LLM of myself.
 
 To process the steps below, run:
 ```bash
-cd chatglm-6b
+cd chatglm
 ```
 ### Finetune
 To finetune, run:

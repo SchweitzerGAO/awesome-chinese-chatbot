@@ -1,10 +1,9 @@
 from flask import Flask, request, jsonify
-import os
 from flask_cors import CORS
 from transformers import AutoModel
 from transformers import AutoTokenizer
 import torch
-from peft import LoraConfig, TaskType, PeftModel
+from peft import PeftModel
 import infer_config
 
 
